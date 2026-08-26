@@ -1,59 +1,148 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# EN.AR Workforce Management System
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A centralized web application for EN.AR Limited to manage staff records, units/departments, job positions, employment classifications, and leave requests — with role-based access control.
 
-## About Laravel
+## Project Overview
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+EN.AR Limited currently manages workforce information (units, job roles, employment types, staff categories, leave records) manually or across disconnected sources. This system centralizes all of that into a single, role-aware application.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+**Assessment objectives this project demonstrates:**
+- Relational database design
+- Backend application logic
+- Authentication and authorization
+- CRUD operations across related entities
+- Workflow logic (leave approval process)
+- A functional, understandable frontend
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Tech Stack
 
-## Learning Laravel
+| Layer | Technology |
+|---|---|
+| Backend framework | Laravel (PHP) |
+| Database | MySQL |
+| Templating | Blade |
+| Frontend | HTML, CSS, JavaScript (Bootstrap) |
+| Data access | Raw SQL via Laravel's `DB` facade (no Eloquent, no migrations — existing hand-built schema) |
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+> **Note on architecture choice:** This project intentionally uses raw SQL queries (`DB::select`, `DB::insert`, `DB::update`) instead of Eloquent ORM, and connects directly to an existing, manually-created database rather than using Laravel migrations. Validation, authentication, authorization, and middleware are still implemented using Laravel's built-in features.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## User Roles & Permissions
 
-## Laravel Sponsors
+| Role | Permissions |
+|---|---|
+| **Administrator** | Full access to all modules |
+| **HR/Admin Officer** | Manage staff records, units, positions, leave requests |
+| **Unit Head** | View staff within their unit; review leave requests for their unit |
+| **Staff** | View own profile; submit leave requests; view own leave history |
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Access is enforced both in the UI (hiding actions) and at the route level via middleware — role checks are never left to the frontend alone.
 
-### Premium Partners
+## Core Modules
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+1. **Authentication & Roles** — Login system with role-based access control.
+2. **Staff Management** — Add, view, update, and deactivate/archive staff. Records are never hard-deleted.
+3. **Unit/Department Management** — Create and edit units; assign a unit head; view staff per unit.
+4. **Job Position Management** — Manage job titles/positions, assignable to staff.
+5. **Employment Classification** — Separate tracking of Staff Category, Employment Type, and Employment Status.
+6. **Leave Management** — Staff submit leave requests (auto-calculated duration); authorized users approve/reject with comments; staff track request status.
+7. **Dashboard** — Workforce summary stats (headcounts, by unit, by employment type, on leave, pending requests), with an optional chart.
+8. **Search & Filtering** — Filter staff by name, unit, position, category, employment type, and status.
 
-## Contributing
+### Bonus Features (optional)
+- Internship management (institution, programme, supervisor, dates, status)
+- Staff document storage (CV, appointment letter, etc.)
+- Notifications on leave approval/rejection
+- Basic reports (staff by unit, by employment type, category distribution, leave history)
+- REST API exposing selected data
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Project Structure
 
-## Code of Conduct
+```
+en-ar-workforce/
+├── app/
+│   ├── Http/
+│   │   ├── Controllers/     # StaffController, UnitController, PositionController,
+│   │   │                    # LeaveController, DashboardController, AuthController
+│   │   └── Middleware/      # CheckRole.php (role-based route protection)
+├── resources/
+│   └── views/
+│       ├── layouts/         # Shared layout: navbar, sidebar
+│       ├── auth/            # Login views
+│       ├── staff/           # Staff CRUD views
+│       ├── units/           # Unit CRUD views
+│       ├── positions/       # Position CRUD views
+│       ├── leave/           # Leave request + approval views
+│       └── dashboard/       # Dashboard view
+├── routes/
+│   └── web.php               # All URL → Controller route definitions
+└── public/
+    └── css, js, images
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+## Database Tables (existing schema)
 
-## Security Vulnerabilities
+| Table | Purpose |
+|---|---|
+| `users` | Login accounts, linked to a role |
+| `units` | Departments/units, optionally linked to a unit head |
+| `positions` | Job titles/positions |
+| `staff` | Staff records — linked to unit, position, category, employment type, status |
+| `leave_requests` | Leave submissions — linked to staff, with type, dates, status, comments |
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Relationships are enforced via foreign keys in the database and joined manually in raw SQL queries (e.g. `staff` joined to `units` and `positions` for display).
 
-## License
+## Setup & Installation
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### Prerequisites
+- PHP 8.1+
+- Composer
+- MySQL Server
+- Node.js + npm (only if compiling CSS/JS assets)
+
+### Steps
+
+1. **Clone/copy the project**
+   ```bash
+   cd en-ar-workforce
+   composer install
+   ```
+
+2. **Configure environment**
+   Copy `.env.example` to `.env` and set your database credentials:
+   ```
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=en_ar_workforce
+   DB_USERNAME=your_username
+   DB_PASSWORD=your_password
+   ```
+   Generate the app key if not already set:
+   ```bash
+   php artisan key:generate
+   ```
+
+3. **Database**
+   This project connects to an existing, already-built database — no migrations are run. Ensure the `en_ar_workforce` database (with its tables: `users`, `units`, `positions`, `staff`, `leave_requests`) exists and matches the schema above before starting the app.
+
+4. **Frontend assets** (only if using Vite/npm-compiled CSS/JS)
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+5. **Run the application**
+   ```bash
+   php artisan serve
+   ```
+   Visit `http://127.0.0.1:8000` in your browser.
+
+## Security Notes
+
+- All raw SQL queries use parameter binding (`?` placeholders) — no user input is ever concatenated directly into a query string.
+- Authorization is enforced server-side via middleware on every protected route, not just hidden in the UI.
+- Passwords are hashed using Laravel's built-in hashing (never stored in plain text).
+
+## Status
+
+This project is under active development as part of an academic assessment for EN.AR Limited's Workforce Management System brief.
