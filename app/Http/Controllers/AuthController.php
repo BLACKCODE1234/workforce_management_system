@@ -92,9 +92,8 @@ class AuthController extends Controller
             [$firstName, $lastName, $email, $hashedPassword]
         );
 
-        // Generate a 6-digit one-time code for email verification.
-        // random_int(0, 999999) + str_pad guarantees a zero-padded 6-digit code.
-        $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        // Generate the numeric one-time code via the shared helper below.
+        $otp = $this->generateOtp();
 
         // Keep the code and the email in the session so the OTP screen can verify them.
         $request->session()->put('otp_code', $otp);
@@ -157,5 +156,21 @@ class AuthController extends Controller
         return redirect()
             ->route('otp.show')
             ->with('status', 'A new code was sent (demo). Check your inbox and try again.');
+    }
+
+    /**
+     * Generate a numeric-only OTP.
+     *
+     * Shared helper so any flow (signup, password reset, etc.) can request a code.
+     * random_int ensures digits only and str_pad keeps the result at 6 digits,
+     * e.g. '000123'.
+     */
+    private function generateOtp(): string
+    {
+        // Pick a random integer between 0 and 999999 (6-digit range).
+        $number = random_int(0, 999999);
+
+        // Zero-pad the number on the left so it is always exactly 6 digits.
+        return str_pad((string) $number, 6, '0', STR_PAD_LEFT);
     }
 }
