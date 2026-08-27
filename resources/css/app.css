@@ -438,6 +438,27 @@ button:focus-visible,
     padding: 20px 0 56px;
 }
 
+/* Hero wrapper override */
+/* Overrides the shared .wrap container stling for the hero section only. */
+/* The navbar keeps the normal .wrap rules because this rule is scoped */
+/* using higher specificity (.hero .wrap beats plain .wrap in the cascade). */
+.hero .wrap {
+    /*
+       Reset the left margin to 0.
+       The shared .wrap uses margin-left: max(20px, (100% - 1180px) / 2 - 28px),
+       which centers the content within the 1180px page limit and creates a
+       large gap on wide screens. Setting it to 0 left-aligns the hero wrapper.
+    */
+    margin-left: 20px; 
+
+    /*
+       Reduce the left padding from the shared 20px down to 12px.
+       This keeps a small, comfortable gutter between the left margin
+       and the hero content instead of pushing it flush against the edge.
+    */
+    padding-left: 20px;
+}
+
 .hero-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
