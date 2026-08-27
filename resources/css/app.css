@@ -20,6 +20,10 @@
     --rule: rgba(21, 25, 44, 0.12);
     --rule-dark: rgba(244, 241, 234, 0.13);
     --white: #ffffff;
+    --page-max: 1180px;
+    --page-pad-left: 20px;
+    --page-pad-right: 40px;
+    --page-pad-sm: 16px;
 }
 
 
@@ -61,14 +65,16 @@ img {
 
 /* ---------- LAYOUT ---------- */
 .wrap {
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0 32px;
+    width: 100%;
+    max-width: var(--page-max);
+    margin: 0 auto 0 max(var(--page-pad-left), calc((100% - var(--page-max)) / 2 - 28px));
+    padding: 0 var(--page-pad-right) 0 var(--page-pad-left);
 }
 
 @media (max-width: 640px) {
     .wrap {
-        padding: 0 22px;
+        margin: 0 auto;
+        padding: 0 var(--page-pad-sm);
     }
 }
 
@@ -88,7 +94,8 @@ header {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 20px 0;
+    min-height: 72px;
+    padding: 0;
     position: relative;
 }
 
@@ -99,6 +106,10 @@ header {
     text-decoration: none;
     color: var(--ink);
     transition: opacity 0.2s ease;
+    margin: 0;
+    padding: 0;
+    flex: none;
+    height: 40px;
 }
 
 .brand:hover {
@@ -109,16 +120,18 @@ header {
 .logo-mark {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 46px;
     height: 40px;
     flex: none;
+    overflow: hidden;
 }
 
 .logo-mark svg {
     width: 100%;
     height: 100%;
-    overflow: visible;
+    display: block;
+    overflow: hidden;
 }
 
 .logo-head {
@@ -142,8 +155,10 @@ header {
 .logo-wordmark {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     line-height: 1;
     gap: 3px;
+    height: 40px;
 }
 
 .logo-name {
@@ -260,7 +275,8 @@ header {
 /* Mobile hamburger menu */
 @media (max-width: 840px) {
     .nav {
-        padding: 12px 0;
+        min-height: 64px;
+        padding: 0;
     }
 
     .nav-toggle {
@@ -314,11 +330,32 @@ header {
     }
 
     .hero {
-        padding: 16px 0 40px;
+        padding: 12px 0 40px;
+    }
+
+    .hero-layout {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        align-items: start;
+    }
+
+    .hero-copy {
+        max-width: none;
+    }
+
+    .hero-media-frame {
+        min-height: 0;
+        aspect-ratio: 16 / 10;
+        border-radius: 14px;
+        padding: 20px;
+    }
+
+    .hero-media-img {
+        max-height: 200px;
     }
 
     .eyebrow {
-        margin-bottom: 14px;
+        margin: 0 0 12px;
     }
 
     .section {
@@ -398,11 +435,56 @@ button:focus-visible,
 
 /* ---------- HERO ---------- */
 .hero {
-    padding: 36px 0 60px;
+    padding: 20px 0 56px;
 }
 
-.hero-grid {
-    max-width: 760px;
+.hero-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px 48px;
+    align-items: start;
+}
+
+.hero-copy {
+    text-align: left;
+    margin: 0;
+    padding: 0;
+    max-width: 34rem;
+    width: 100%;
+    justify-self: stretch;
+    align-self: start;
+}
+
+.hero-media {
+    min-width: 0;
+    width: 100%;
+    justify-self: stretch;
+    align-self: start;
+}
+
+.hero-media-frame {
+    width: 100%;
+    min-height: 320px;
+    aspect-ratio: 5 / 4;
+    border-radius: 18px;
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    background:
+        linear-gradient(160deg, #e7eef0 0%, var(--paper-2) 55%, #e2ebe4 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+    box-shadow: 0 22px 50px -30px rgba(21, 25, 44, 0.45);
+}
+
+.hero-media-img {
+    width: 100%;
+    height: 100%;
+    max-height: 280px;
+    object-fit: contain;
+    object-position: center;
+    display: block;
 }
 
 .eyebrow {
@@ -414,7 +496,7 @@ button:focus-visible,
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--moss);
-    margin-bottom: 24px;
+    margin: 0 0 16px;
 }
 
 .eyebrow::before {

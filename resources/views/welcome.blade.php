@@ -16,8 +16,8 @@
 
     {{-- ========== HERO ========== --}}
     <section class="hero">
-        <div class="wrap hero-grid">
-            <div>
+        <div class="wrap hero-layout">
+            <div class="hero-copy">
                 <span class="eyebrow">EN.AR Limited · Internal system</span>
                 <h1>One record for every<br>person on the <em>roster</em>.</h1>
                 <p class="lede">Units, positions, leave, and status — kept in one place instead of scattered across spreadsheets. Sign in to see your workspace, whatever your role.</p>
@@ -26,6 +26,17 @@
                     <a href="#how" class="btn btn-ghost">See how it works</a>
                 </div>
                 <p class="hero-note">Access is scoped to your role automatically — no separate setup needed.</p>
+            </div>
+
+            <div class="hero-media">
+                <div class="hero-media-frame">
+                    {{-- Swap this for your hero image: public/images/hero.jpg --}}
+                    <img
+                        src="{{ asset('images/enar-logo.jpg') }}"
+                        alt="EN.AR Limited workforce"
+                        class="hero-media-img"
+                    >
+                </div>
             </div>
         </div>
     </section>
