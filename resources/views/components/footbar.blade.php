@@ -1,12 +1,10 @@
-{{-- Footer: company name and quick links --}}
-<footer class="footer">
-    <div class="container footer-inner">
+{{-- Footer: company name and auth links --}}
+<footer>
+    <div class="wrap foot-row">
         <span>EN.AR Limited — Workforce Management System</span>
-        <div class="footer-links">
-            <a href="#about">About</a>
-            <a href="#roles">Roles</a>
-            <a href="#modules">Modules</a>
-            <a href="/login">Log in</a>
+        <div class="foot-links">
+            <a href="{{ route('login') }}">Log in</a>
+            <a href="{{ route('signup') }}">Sign up</a>
         </div>
     </div>
 </footer>

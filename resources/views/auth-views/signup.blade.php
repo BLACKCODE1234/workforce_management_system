@@ -6,7 +6,7 @@
     <title>Sign up — EN.AR</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
@@ -16,7 +16,7 @@
             <p class="auth-brand">EN.AR</p>
             <h1 class="auth-title">Sign up</h1>
             <p class="lead">Signup form will be built here.</p>
-            <a href="/" class="btn btn-outline">Back to home</a>
+            <a href="/" class="btn btn-ghost">Back to home</a>
         </div>
     </main>
 </body>

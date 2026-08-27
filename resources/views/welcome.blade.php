@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EN.AR Workforce Management System</title>
+    <title>EN.AR Workforce — One record for every person on the roster</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
@@ -14,124 +14,83 @@
     {{-- ========== NAVBAR ========== --}}
     <x-navbar />
 
-    {{-- ========== HERO ==========
-         Introduces EN.AR and the purpose of the system.
-         Primary actions: Log in / learn about roles.
-    --}}
+    {{-- ========== HERO ========== --}}
     <section class="hero">
-        <div class="container hero-inner">
-            <p class="hero-brand">EN.AR</p>
-            <h1>Workforce Management System</h1>
-            <p class="hero-text">
-                A centralized app for EN.AR Limited to manage staff records,
-                units, job positions, employment classifications, and leave requests —
-                with role-based access control.
-            </p>
-            <div class="hero-actions">
-                <a href="/login" class="btn btn-dark">Log in</a>
-                <a href="#roles" class="btn btn-outline">View roles</a>
+        <div class="wrap hero-grid">
+            <div>
+                <span class="eyebrow">EN.AR Limited · Internal system</span>
+                <h1>One record for every<br>person on the <em>roster</em>.</h1>
+                <p class="lede">Units, positions, leave, and status — kept in one place instead of scattered across spreadsheets. Sign in to see your workspace, whatever your role.</p>
+                <div class="hero-ctas">
+                    <a href="{{ route('signup') }}" class="btn btn-primary">Create an account</a>
+                    <a href="#how" class="btn btn-ghost">See how it works</a>
+                </div>
+                <p class="hero-note">Access is scoped to your role automatically — no separate setup needed.</p>
             </div>
         </div>
     </section>
 
-    {{-- ========== PROBLEM ==========
-         Explains why the system exists (from README overview).
-    --}}
-    <section class="block" id="about">
-        <div class="container">
-            <h2>Why this system exists</h2>
-            <p class="lead">
-                Workforce information was handled manually or across disconnected sources.
-                This application brings units, job roles, employment types, staff categories,
-                and leave records into one role-aware place.
-            </p>
+    {{-- ========== STATS ========== --}}
+    <div class="wrap">
+        <div class="stats">
+            <div class="stats-row">
+                <div class="stat">
+                    <div class="num">4</div>
+                    <div class="lbl">Role-based views</div>
+                </div>
+                <div class="stat">
+                    <div class="num">8</div>
+                    <div class="lbl">Core modules</div>
+                </div>
+                <div class="stat">
+                    <div class="num">1</div>
+                    <div class="lbl">Source of truth</div>
+                </div>
+                <div class="stat">
+                    <div class="num">0</div>
+                    <div class="lbl">Spreadsheets needed</div>
+                </div>
+            </div>
         </div>
-    </section>
+    </div>
 
-    {{-- ========== ROLES ==========
-         Four user roles from the README permissions table.
-    --}}
-    <section class="block block-alt" id="roles">
-        <div class="container">
-            <h2>Who can use it</h2>
-            <p class="lead">Access depends on your role. Permissions are enforced in the UI and on the server.</p>
+    {{-- ========== HOW IT WORKS ========== --}}
+    <section class="section" id="how">
+        <div class="wrap">
+            <div class="section-head">
+                <div class="section-eyebrow">How it works</div>
+                <h2>Three steps from sign-up to a full workforce view.</h2>
+                <p class="section-sub">No separate setup for each department — your role decides what you see the moment you're in.</p>
+            </div>
 
-            <div class="role-grid">
-                <div class="role-item">
-                    <h3>Administrator</h3>
-                    <p>Full access to all modules.</p>
+            <div class="steps">
+                <div class="stepcard" tabindex="0">
+                    <div class="stepnum">01</div>
+                    <h3>Create your account</h3>
+                    <p>Sign up and verify with a one-time code. Your account is linked to your role by HR or an administrator.</p>
                 </div>
-                <div class="role-item">
-                    <h3>HR / Admin Officer</h3>
-                    <p>Manage staff records, units, positions, and leave requests.</p>
+                <div class="stepcard" tabindex="0">
+                    <div class="stepnum">02</div>
+                    <h3>Land on your dashboard</h3>
+                    <p>Admin, HR, Unit Head, or Staff — you're routed straight to the view built for what you actually need to do.</p>
                 </div>
-                <div class="role-item">
-                    <h3>Unit Head</h3>
-                    <p>View staff in their unit and review leave for that unit.</p>
-                </div>
-                <div class="role-item">
-                    <h3>Staff</h3>
-                    <p>View own profile, submit leave, and track leave history.</p>
+                <div class="stepcard" tabindex="0">
+                    <div class="stepnum">03</div>
+                    <h3>Manage or request, in one place</h3>
+                    <p>Update staff records, review leave, or submit a request yourself — all changes reflect across the system instantly.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- ========== MODULES ==========
-         Core modules listed in the README.
-    --}}
-    <section class="block" id="modules">
-        <div class="container">
-            <h2>What you can do</h2>
-            <p class="lead">Core modules for day-to-day workforce management.</p>
-
-            <ol class="module-list">
-                <li>
-                    <strong>Authentication &amp; Roles</strong>
-                    <span>Login with role-based access control.</span>
-                </li>
-                <li>
-                    <strong>Staff Management</strong>
-                    <span>Add, view, update, and archive staff. Records are never hard-deleted.</span>
-                </li>
-                <li>
-                    <strong>Unit / Department Management</strong>
-                    <span>Create units, assign a unit head, and view staff per unit.</span>
-                </li>
-                <li>
-                    <strong>Job Position Management</strong>
-                    <span>Manage job titles and assign them to staff.</span>
-                </li>
-                <li>
-                    <strong>Employment Classification</strong>
-                    <span>Track staff category, employment type, and employment status.</span>
-                </li>
-                <li>
-                    <strong>Leave Management</strong>
-                    <span>Submit leave, approve or reject with comments, and track status.</span>
-                </li>
-                <li>
-                    <strong>Dashboard</strong>
-                    <span>Headcounts, unit summaries, on leave, and pending requests.</span>
-                </li>
-                <li>
-                    <strong>Search &amp; Filtering</strong>
-                    <span>Filter staff by name, unit, position, category, type, and status.</span>
-                </li>
-            </ol>
-        </div>
-    </section>
-
-    {{-- ========== CTA ==========
-         Final prompt to sign in.
-    --}}
-    <section class="block block-cta" id="start">
-        <div class="container cta-inner">
-            <h2>Ready to open your workspace?</h2>
-            <p>Sign in with your EN.AR account to see the dashboard for your role.</p>
-            <div class="hero-actions">
-                <a href="/login" class="btn btn-dark">Log in</a>
-                <a href="/signup" class="btn btn-outline">Sign up</a>
+    {{-- ========== CTA ========== --}}
+    <section class="cta-band">
+        <div class="wrap">
+            <h2>Bring your workforce into one place.</h2>
+            <p>Create your account and get routed straight to the dashboard built for your role.</p>
+            <div class="cta-actions">
+                <a href="{{ route('signup') }}" class="btn btn-primary">Create an account</a>
+                <a href="{{ route('login') }}" class="btn btn-ghost">I already have one</a>
             </div>
         </div>
     </section>
