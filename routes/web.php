@@ -1,13 +1,20 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::view('/login', 'auth-views.login')->name('login');
-Route::view('/signup', 'auth-views.signup')->name('signup');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+
+Route::get('/signup', [AuthController::class, 'showSignup'])->name('signup');
+Route::post('/signup', [AuthController::class, 'signup'])->name('signup.submit');
+
+Route::get('/otp-verify', [AuthController::class, 'showOtp'])->name('otp.show');
+Route::post('/otp-verify', [AuthController::class, 'verifyOtp'])->name('otp.verify');
 
 /*
 | Temporary placeholder routes so dashboard links resolve.

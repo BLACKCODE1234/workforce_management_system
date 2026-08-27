@@ -138,7 +138,7 @@
                             <span class="days">{{ $type->used }} / {{ $type->allocated }} days</span>
                         </div>
                         <div class="bd-track">
-                            <div class="bd-fill {{ $type->css_class }}" style="--pct: {{ $pct }}%"></div>
+                            <div class="bd-fill {{ $type->css_class }} bd-pct-{{ min(100, max(0, (int) $pct)) }}"></div>
                         </div>
                     </div>
                 @endforeach
