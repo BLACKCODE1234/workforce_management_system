@@ -15,6 +15,7 @@ Route::post('/signup', [AuthController::class, 'signup'])->name('signup.submit')
 
 Route::get('/otp-verify', [AuthController::class, 'showOtp'])->name('otp.show');
 Route::post('/otp-verify', [AuthController::class, 'verifyOtp'])->name('otp.verify');
+Route::post('/otp-resend', [AuthController::class, 'resendOtp'])->name('otp.resend');
 
 /*
 | Temporary placeholder routes so dashboard links resolve.

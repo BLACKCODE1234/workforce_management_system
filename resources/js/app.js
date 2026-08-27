@@ -1,6 +1,11 @@
 import './bootstrap';
 
 document.addEventListener('DOMContentLoaded', () => {
+    initNavToggle();
+    initOtpBoxes();
+});
+
+function initNavToggle() {
     const toggle = document.querySelector('.nav-toggle');
     const menu = document.querySelector('#nav-menu');
 
@@ -29,8 +34,68 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     window.addEventListener('resize', () => {
-        if (window.innerWidth > 768) {
+        if (window.innerWidth > 840) {
             setOpen(false);
         }
     });
-});
+}
+
+function initOtpBoxes() {
+    const form = document.querySelector('.otp-form');
+    const hidden = document.querySelector('#otp');
+    const boxes = Array.from(document.querySelectorAll('.otp-box'));
+
+    if (!form || !hidden || boxes.length === 0) {
+        return;
+    }
+
+    const syncHidden = () => {
+        hidden.value = boxes.map((box) => box.value.replace(/\D/g, '')).join('');
+    };
+
+    // Prefill boxes if validation returned an old OTP value.
+    if (hidden.value.length === boxes.length) {
+        hidden.value.split('').forEach((digit, index) => {
+            if (boxes[index]) {
+                boxes[index].value = digit;
+            }
+        });
+    }
+
+    boxes.forEach((box, index) => {
+        box.addEventListener('input', () => {
+            box.value = box.value.replace(/\D/g, '').slice(0, 1);
+            syncHidden();
+
+            if (box.value && index < boxes.length - 1) {
+                boxes[index + 1].focus();
+            }
+        });
+
+        box.addEventListener('keydown', (event) => {
+            if (event.key === 'Backspace' && !box.value && index > 0) {
+                boxes[index - 1].focus();
+            }
+        });
+
+        box.addEventListener('paste', (event) => {
+            event.preventDefault();
+            const pasted = (event.clipboardData || window.clipboardData)
+                .getData('text')
+                .replace(/\D/g, '')
+                .slice(0, boxes.length);
+
+            pasted.split('').forEach((digit, offset) => {
+                if (boxes[offset]) {
+                    boxes[offset].value = digit;
+                }
+            });
+
+            syncHidden();
+            const focusIndex = Math.min(pasted.length, boxes.length - 1);
+            boxes[focusIndex].focus();
+        });
+    });
+
+    form.addEventListener('submit', syncHidden);
+}

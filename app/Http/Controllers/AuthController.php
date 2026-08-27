@@ -56,17 +56,25 @@ class AuthController extends Controller
             'terms' => ['accepted'],
         ]);
 
+        // Keep email available while the user is on the OTP screen.
+        $request->session()->put('signup_email', $request->input('email'));
+
         return redirect()
             ->route('otp.show')
-            ->with('signup_email', $request->input('email'))
             ->with('status', 'We sent a one-time code to your email (demo). Enter any 6 digits to continue.');
     }
 
     /**
      * Show the OTP verification form.
      */
-    public function showOtp(): View
+    public function showOtp(Request $request): View|RedirectResponse
     {
+        if (! $request->session()->has('signup_email')) {
+            return redirect()
+                ->route('signup')
+                ->withErrors(['email' => 'Start with sign up so we know where to send your code.']);
+        }
+
         return view('auth-views.otp-verify');
     }
 
@@ -76,11 +84,27 @@ class AuthController extends Controller
     public function verifyOtp(Request $request): RedirectResponse
     {
         $request->validate([
-            'otp' => ['required', 'string', 'size:6'],
+            'otp' => ['required', 'digits:6'],
         ]);
+
+        $request->session()->forget('signup_email');
 
         return redirect()
             ->route('dashboard.staff')
             ->with('status', 'Account verified (demo). Real OTP checks will use email + database.');
+    }
+
+    /**
+     * Resend the OTP (demo placeholder).
+     */
+    public function resendOtp(Request $request): RedirectResponse
+    {
+        if (! $request->session()->has('signup_email')) {
+            return redirect()->route('signup');
+        }
+
+        return redirect()
+            ->route('otp.show')
+            ->with('status', 'A new code was sent (demo). Check your inbox and try again.');
     }
 }

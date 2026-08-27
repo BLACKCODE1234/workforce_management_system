@@ -788,6 +788,97 @@ footer {
     font-weight: 500;
 }
 
+.otp-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: var(--moss-soft);
+    color: var(--moss);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+}
+
+.otp-icon svg {
+    width: 28px;
+    height: 28px;
+}
+
+.otp-email {
+    color: var(--ink);
+    font-weight: 600;
+}
+
+.otp-label {
+    text-align: center;
+}
+
+.otp-boxes {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+}
+
+.otp-box {
+    width: 100%;
+    aspect-ratio: 1;
+    max-height: 56px;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 20px;
+    font-weight: 600;
+    border: 1px solid rgba(21, 25, 44, 0.14);
+    border-radius: 10px;
+    background: var(--paper);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.otp-box:focus {
+    border-color: rgba(21, 25, 44, 0.4);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(21, 25, 44, 0.08);
+}
+
+.otp-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+}
+
+.otp-hint {
+    margin: 0;
+    font-size: 12.5px;
+    color: var(--ink-faint);
+}
+
+.otp-resend-form {
+    margin: 0;
+}
+
+.otp-resend-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+@media (max-width: 420px) {
+    .otp-boxes {
+        gap: 6px;
+    }
+
+    .otp-box {
+        font-size: 17px;
+        border-radius: 8px;
+    }
+}
+
 .check-row {
     display: flex;
     align-items: center;
