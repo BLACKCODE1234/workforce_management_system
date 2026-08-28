@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log in — EN.AR Workforce</title>
+    <title>Forgot password — EN.AR Workforce</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -14,13 +14,13 @@
     {{-- ========== NAVBAR ========== --}}
     <x-navbar />
 
-    {{-- ========== LOGIN ========== --}}
+    {{-- ========== FORGOT PASSWORD ========== --}}
     <main class="auth-shell">
         <div class="auth-card">
             <div class="auth-card-head">
                 <p class="auth-eyebrow">EN.AR Workforce</p>
-                <h1 class="auth-title">Welcome back</h1>
-                <p class="auth-lead">Sign in to open the workspace for your role.</p>
+                <h1 class="auth-title">Forgot your password?</h1>
+                <p class="auth-lead">Enter your work email and we’ll send you a one-time code to reset it.</p>
             </div>
 
             @if ($errors->any())
@@ -33,7 +33,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('login.submit') }}" class="auth-form" novalidate>
+            <form method="POST" action="{{ route('password.email') }}" class="auth-form" novalidate>
                 @csrf
 
                 <div class="field">
@@ -49,32 +49,12 @@
                     >
                 </div>
 
-                <div class="field">
-                    <div class="field-row">
-                        <label for="password">Password</label>
-                        <a href="{{ route('password.request') }}" class="field-link">Forgot password?</a>
-                    </div>
-                    <input
-                        id="password"
-                        type="password"
-                        name="password"
-                        autocomplete="current-password"
-                        placeholder="Enter your password"
-                        required
-                    >
-                </div>
-
-                <label class="check-row">
-                    <input type="checkbox" name="remember" value="1" @checked(old('remember'))>
-                    <span>Keep me signed in on this device</span>
-                </label>
-
-                <button type="submit" class="btn btn-primary auth-submit">Log in</button>
+                <button type="submit" class="btn btn-primary auth-submit">Send reset code</button>
             </form>
 
             <p class="auth-foot">
-                New to EN.AR?
-                <a href="{{ route('signup') }}">Create an account</a>
+                Remembered it?
+                <a href="{{ route('login') }}">Back to log in</a>
             </p>
         </div>
     </main>

@@ -17,6 +17,13 @@ Route::get('/otp-verify', [AuthController::class, 'showOtp'])->name('otp.show');
 Route::post('/otp-verify', [AuthController::class, 'verifyOtp'])->name('otp.verify');
 Route::post('/otp-resend', [AuthController::class, 'resendOtp'])->name('otp.resend');
 
+Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+Route::post('/forgot-password', [AuthController::class, 'sendResetOtp'])->name('password.email');
+Route::get('/reset-password', [AuthController::class, 'showResetPassword'])->name('password.reset');
+Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
+
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 /*
 | Temporary placeholder routes so dashboard links resolve.
 | Replace with real controllers when auth + leave modules are built.
