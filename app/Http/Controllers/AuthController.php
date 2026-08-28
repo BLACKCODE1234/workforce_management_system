@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use App\Jobs\SendOtpEmail;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
@@ -145,15 +145,14 @@ class AuthController extends Controller
         // Keep the email in the session so the OTP screen knows who to verify.
         $request->session()->put('signup_email', $email);
 
-        // "Send" the code through the configured mail driver.
-        // With MAIL_MAILER=log the email is written to storage/logs/laravel.log.
-        Mail::raw(
+        // Queue the OTP email. Dispatching is instant — the real SMTP send
+        // happens in the background via the queue worker, so the redirect
+        // to the OTP screen is never held up by Gmail's ~20-30s latency.
+        dispatch(new SendOtpEmail(
+            $email,
             "Your EN.AR verification code is: {$otp}",
-            function ($message) use ($email) {
-                $message->to($email)
-                    ->subject('Your EN.AR verification code');
-            }
-        );
+            'Your EN.AR verification code'
+        ));
 
         return redirect()
             ->route('otp.show')
@@ -294,14 +293,13 @@ class AuthController extends Controller
             [$email, $otp]
         );
 
-        // Send the new code through the configured mail driver.
-        Mail::raw(
+        // Queue a fresh code email instead of sending synchronously,
+        // so the user is not blocked on Gmail SMTP latency.
+        dispatch(new SendOtpEmail(
+            $email,
             "Your EN.AR verification code is: {$otp}",
-            function ($message) use ($email) {
-                $message->to($email)
-                    ->subject('Your EN.AR verification code');
-            }
-        );
+            'Your EN.AR verification code'
+        ));
 
         return redirect()
             ->route('otp.show')
@@ -355,13 +353,12 @@ class AuthController extends Controller
                 [$email, $otp]
             );
 
-            Mail::raw(
+            // Queue the reset email so SMTP latency does not block the redirect.
+            dispatch(new SendOtpEmail(
+                $email,
                 "Your EN.AR password reset code is: {$otp}",
-                function ($message) use ($email) {
-                    $message->to($email)
-                        ->subject('Your EN.AR password reset code');
-                }
-            );
+                'Your EN.AR password reset code'
+            ));
         }
 
         // Keep the email so the reset screen knows whose password to change.
