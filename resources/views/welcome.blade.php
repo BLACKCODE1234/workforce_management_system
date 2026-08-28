@@ -30,9 +30,8 @@
 
             <div class="hero-media">
                 <div class="hero-media-frame">
-                    {{-- Swap this for your hero image: public/images/hero.jpg --}}
                     <img
-                        src="{{ asset('images/enar-logo.jpg') }}"
+                        src="{{ asset('images/tech.jpg') }}"
                         alt="EN.AR Limited workforce"
                         class="hero-media-img"
                     >
