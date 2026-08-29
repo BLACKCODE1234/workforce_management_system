@@ -108,12 +108,13 @@ class AuthController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
 
-        // Check whether this email is already registered.
+        // Check whether this email is already registered or pending approval.
         // The '?' placeholder is bound to $email -> prevents SQL injection.
         $existing = DB::select('SELECT id FROM users WHERE email = ?', [$email]);
+        $pending = DB::select('SELECT id FROM pending_users WHERE email = ?', [$email]);
 
-        // If a row came back, the email is taken. Stop here with an error.
-        if (! empty($existing)) {
+        // If a row came back from either table, the email is taken.
+        if (! empty($existing) || ! empty($pending)) {
             return redirect()
                 ->back()
                 ->withInput()
@@ -121,13 +122,12 @@ class AuthController extends Controller
         }
 
         // Use the password as provided (no hashing for now).
-        $password = $request->input('password');
 
-        // Insert the new user into the MySQL `users` table.
-        // `role` is omitted on purpose so the database default ('staff') applies.
-        // created_at / updated_at are filled automatically by the column defaults.
+        // Insert the new user into the `pending_users` table first.
+        // The row only moves to `users` after the OTP is verified correctly.
+        // `role` is omitted on purpose so the database default applies.
         DB::insert(
-            'INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)',
+            'INSERT INTO pending_users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)',
             [$firstName, $lastName, $email, $password]
         );
 
@@ -245,7 +245,19 @@ class AuthController extends Controller
         // Code is correct. Delete it so it cannot be verified again.
         DB::delete('DELETE FROM otps WHERE id = ?', [$record->id]);
 
-        // Find the matching user account so we can log them in.
+        // Move the verified account from `pending_users` into `users`.
+        // The single UPDATE...SELECT copies the pending row, then the
+        // DELETE removes it so it cannot be re-promoted a second time.
+        DB::insert(
+            'INSERT INTO users (first_name, last_name, email, password)
+             SELECT first_name, last_name, email, password
+             FROM pending_users WHERE email = ? LIMIT 1',
+            [$email]
+        );
+
+        DB::delete('DELETE FROM pending_users WHERE email = ?', [$email]);
+
+        // Find the newly created account so we can log them in.
         $user = DB::select(
             'SELECT id FROM users WHERE email = ? LIMIT 1',
             [$email]

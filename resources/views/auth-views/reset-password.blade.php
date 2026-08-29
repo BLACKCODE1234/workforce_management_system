@@ -48,7 +48,7 @@
                 <input type="hidden" name="otp" id="otp" value="{{ old('otp') }}">
 
                 <div class="field">
-                    <label class="otp-label" for="otp-1">Reset code</label>
+                    <label class="otp-label" for="otp-1">Send Verification Code</label>
                     <div class="otp-boxes" role="group" aria-label="6-digit reset code">
                         <input id="otp-1" class="otp-box" type="text" inputmode="numeric" maxlength="1" autocomplete="one-time-code" aria-label="Digit 1">
                         <input class="otp-box" type="text" inputmode="numeric" maxlength="1" aria-label="Digit 2">

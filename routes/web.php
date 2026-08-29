@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Schema;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +25,58 @@ Route::get('/reset-password', [AuthController::class, 'showResetPassword'])->nam
 Route::post('/reset-password', [AuthController::class, 'resetPassword'])->name('password.update');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/dashboard/admin', function () {
+    $total = DB::table('staff')->count();
+    $active = DB::table('staff')->where('employment_status', 'Active')->count();
+
+    $pendingRequests = 0;
+    if (Schema::hasTable('leave_requests')) {
+        $pendingRequests = DB::table('leave_requests')->where('status', 'Pending')->count();
+    }
+
+    $byDepartment = DB::table('staff')
+        ->selectRaw("COALESCE(department, 'Unassigned') AS name, COUNT(*) AS total")
+        ->groupBy('department')
+        ->orderByDesc('total')
+        ->get();
+
+    $byWorkMode = DB::table('staff')
+        ->selectRaw("COALESCE(work_mode, 'Unassigned') AS name, COUNT(*) AS total")
+        ->groupBy('work_mode')
+        ->orderByDesc('total')
+        ->get();
+
+    $byStatus = DB::table('staff')
+        ->selectRaw("COALESCE(employment_status, 'Unassigned') AS name, COUNT(*) AS total")
+        ->groupBy('employment_status')
+        ->orderByDesc('total')
+        ->get();
+
+    $byCategory = DB::table('staff')
+        ->selectRaw("COALESCE(staff_category, 'Unassigned') AS name, COUNT(*) AS total")
+        ->groupBy('staff_category')
+        ->orderByDesc('total')
+        ->get();
+
+    $recentStaff = DB::table('staff')
+        ->orderByDesc('created_at')
+        ->limit(8)
+        ->get();
+
+    return view('dashboards.admin', [
+        'total' => $total,
+        'active' => $active,
+        'pendingRequests' => $pendingRequests,
+        'inactive' => $total - $active,
+        'byDepartment' => $byDepartment,
+        'byWorkMode' => $byWorkMode,
+        'byStatus' => $byStatus,
+        'byCategory' => $byCategory,
+        'recentStaff' => $recentStaff,
+    ]);
+})->name('dashboard.admin');
+
 
 /*
 | Temporary placeholder routes so dashboard links resolve.

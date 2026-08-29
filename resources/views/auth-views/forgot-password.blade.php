@@ -49,7 +49,7 @@
                     >
                 </div>
 
-                <button type="submit" class="btn btn-primary auth-submit">Send reset code</button>
+                <button type="submit" class="btn btn-primary auth-submit">Send Verification Code</button>
             </form>
 
             <p class="auth-foot">

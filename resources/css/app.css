@@ -1739,6 +1739,81 @@ footer {
     background: #6C7A93;
 }
 
+.bd-fill.moss {
+    background: #4B6B4F;
+}
+
+.bd-fill.slate {
+    background: #6C7A93;
+}
+
+/* ---------- ADMIN DASHBOARD ---------- */
+.topbar-sub {
+    margin-top: 5px;
+    color: rgba(21, 25, 44, 0.52);
+    font-size: 13px;
+}
+
+.breakdown-empty {
+    color: rgba(21, 25, 44, 0.45);
+    font-size: 13px;
+    margin: 0;
+}
+
+.recent-table {
+    padding: 6px 0;
+}
+
+.rt-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 22px;
+    border-bottom: 1px solid rgba(21, 25, 44, 0.07);
+}
+
+.rt-row:last-child {
+    border-bottom: none;
+}
+
+.rt-id {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.rt-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    background: #EAE3D4;
+    color: #2A2E3E;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.rt-name {
+    font-weight: 500;
+    font-size: 13.5px;
+    color: #191D2E;
+}
+
+.rt-role {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: rgba(21, 25, 44, 0.46);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
 .bd-fill.other {
     background: #B4553F;
 }
